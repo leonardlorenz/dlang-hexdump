@@ -65,12 +65,12 @@ void writeBufferFancy(byte[] arr){
         // print ascii
         for (auto y = x; y < chunkWidth + x; y++) {
             if (y < arr.length) {
-                if (cast(char)arr[y] != cast(char)"\n"){
-                    if (cast(char)arr[y] != cast(char)" "){
-                        writef("%c", cast(char)arr[y]);
-                    } else {
-                        write(".");
-                    }
+                char current = cast(char) arr[y];
+                if(current != cast(char) "\n"
+                && current != cast(char) "\t"
+                && current != cast(char) " "
+                ){
+                    writef("%c", cast(char)arr[y]);
                 } else {
                     write(".");
                 }
