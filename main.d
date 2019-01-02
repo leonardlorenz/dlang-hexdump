@@ -54,10 +54,15 @@ void writeBufferFancy(byte[] arr){
         // print hex
         for (auto y = x; y < chunkWidth + x; y++){
             if (y < arr.length) {
-                if (cast(char)arr[y] != cast(char)"\n"){
-                    writef("%2X ", cast(char)arr[y]);
+                char current = cast(char) arr[y];
+                if (current != cast(char)"\n"){
+                    if (current != cast(char)"\t"){
+                        writef("%2X ", cast(char)arr[y]);
+                    } else {
+                        write("\\t ");
+                    }
                 } else {
-                    writef("\\n ");
+                    write("\\n ");
                 }
             }
         }
@@ -66,9 +71,9 @@ void writeBufferFancy(byte[] arr){
         for (auto y = x; y < chunkWidth + x; y++) {
             if (y < arr.length) {
                 char current = cast(char) arr[y];
-                if(current != cast(char) "\n"
-                && current != cast(char) "\t"
-                && current != cast(char) " "
+                if (current != cast(char) "\n"
+                 && current != cast(char) "\t"
+                 && current != cast(char) " "
                 ){
                     writef("%c", cast(char)arr[y]);
                 } else {
