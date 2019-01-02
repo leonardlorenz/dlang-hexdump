@@ -1,6 +1,6 @@
 compile:
 	ldc main.d
 run:
-	./main testfile.txt output.txt
+	./main testfile.txt
 clean:
 	rm main.o main

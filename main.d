@@ -3,27 +3,21 @@ import std.file;
 import std.string;
 
 string INPUT_PATH;
-string OUTPUT_PATH;
 
 void main(string[] args){
-    if (args.length == 3) {
+    if (args.length == 2) {
         string cwd = getcwd();
         INPUT_PATH = cwd ~ "/" ~ args[1];
-        OUTPUT_PATH = cwd ~ "/" ~ args[2];
-        /*
-        writeln(INPUT_PATH);
-        writeln(OUTPUT_PATH);
-        */
     }
 
     // open input file
     File INPUT_FILE = File(INPUT_PATH, "r");
-    File OUTPUT_FILE = File(OUTPUT_PATH, "w");
 
     try{
         // read into buffer
         byte[] buffer = rawReadUntilEOF(INPUT_PATH);
 
+        // write buffer as hex and ascii next to each other
         writeBufferFancy(buffer);
 
         // write buffer as ascii
@@ -52,37 +46,37 @@ byte[] rawReadUntilEOF(string path){
 }
 
 void writeBufferFancy(byte[] arr){
+    import std.array : appender;
+    auto chunkWidth = 24;
+    int lineWidth = chunkWidth / 2 + 4;
+
     // loop through buffer
-    for (int y; y < arr.length - 1; y++) {
-        writef("%2X ", cast(char)arr[y]);
-        // if byte chunk of 8 bytes is reached, print ascii for those 8 bytes and print a newline
-        if (y % 8 == 0 && y != 0) {
-            writef("      ");
-            for (int z; z < 8; z++) {
-                writef("%c", cast(char)arr[y - 8 + z]);
+    for (auto x = 0; x < arr.length; x += chunkWidth) {
+        // print hex
+        for (auto y = x; y < chunkWidth + x; y++){
+            if (y < arr.length) {
+                if (cast(char)arr[y] != cast(char)"\n"){
+                    writef("%2X ", cast(char)arr[y]);
+                } else {
+                    writef("\\n ");
+                }
             }
-            writef("\n");
         }
-    }
-    writef("\n");
-}
-
-/*
-
-void writeArrAscii(byte[] arr){
-    for (int y; y < arr.length - 1; y++) {
-        writef("%c", arr[y]);
-    }
-    writef("\n");
-}
-
-void writeArrHex(byte[] arr){
-    for (int y; y < arr.length - 1; y++) {
-        writef("%X ", arr[y]);
-        if (y % 8 == 0) {
-            writef("\n");
+        write("      ");
+        // print ascii
+        for (auto y = x; y < chunkWidth + x; y++) {
+            if (y < arr.length) {
+                if (cast(char)arr[y] != cast(char)"\n"){
+                    if (cast(char)arr[y] != cast(char)" "){
+                        writef("%c", cast(char)arr[y]);
+                    } else {
+                        write(".");
+                    }
+                } else {
+                    write(".");
+                }
+            }
         }
+        write("\n");
     }
-    writef("\n");
 }
-*/
