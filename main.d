@@ -38,15 +38,33 @@ void main(string[] args){
                 }
             }
 
+            writeBufferFancy(buffer);
+
             // write buffer as ascii
-            writeArrAscii(buffer);
+            //writeArrAscii(buffer);
 
             // write buffer as hex
-            writeArrHex(buffer);
+            //writeArrHex(buffer);
         }
     } catch (FileException) {
         writeln("Something went wrong reading the file. Are you sure you have permissions?");
     }
+}
+
+void writeBufferFancy(char[] arr){
+    // loop through buffer
+    for (int y; y < arr.length - 1; y++) {
+        writef("%2X ", arr[y]);
+        // if byte chunk of 8 bytes is reached, print ascii for those 8 bytes and print a newline
+        if (y % 8 == 0 && y != 0) {
+            writef("      ");
+            for (int z; z < 8; z++) {
+                writef("%#c", arr[y - 8 + z]);
+            }
+            writef("\n");
+        }
+    }
+    writef("\n");
 }
 
 void writeArrAscii(char[] arr){
@@ -59,6 +77,9 @@ void writeArrAscii(char[] arr){
 void writeArrHex(char[] arr){
     for (int y; y < arr.length - 1; y++) {
         writef("%X ", arr[y]);
+        if (y % 8 == 0) {
+            writef("\n");
+        }
     }
     writef("\n");
 }
