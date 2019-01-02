@@ -7,7 +7,7 @@ string INPUT_PATH;
 void main(string[] args){
     if (args.length == 2) {
         string cwd = getcwd();
-        INPUT_PATH = cwd ~ "/" ~ args[1];
+        INPUT_PATH = args[1];
     }
 
     // open input file
@@ -46,7 +46,6 @@ byte[] rawReadUntilEOF(string path){
 }
 
 void writeBufferFancy(byte[] arr){
-    import std.array : appender;
     auto chunkWidth = 24;
     int lineWidth = chunkWidth / 2 + 4;
 
