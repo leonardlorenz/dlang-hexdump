@@ -21,45 +21,45 @@ void main(string[] args){
     File OUTPUT_FILE = File(OUTPUT_PATH, "w");
 
     try{
-        bool is_eof = false;
-        // while EOF not found
-        while(!is_eof){
+        // read into buffer
+        byte[] buffer = rawReadUntilEOF(INPUT_PATH);
 
-            // read into buffer
-            char[] buffer = INPUT_FILE.rawRead(new char[1024]);
+        writeBufferFancy(buffer);
 
-            // loop through buffer to find EOF
-            int x;
-            for(; x < buffer.length; x++){
-                // EOF == 0xA == 10 for some reason
-                if (buffer[x] == 0xA){
-                    is_eof = true;
-                    break;
-                }
-            }
+        // write buffer as ascii
+        //writeArrAscii(buffer);
 
-            writeBufferFancy(buffer);
-
-            // write buffer as ascii
-            //writeArrAscii(buffer);
-
-            // write buffer as hex
-            //writeArrHex(buffer);
-        }
+        // write buffer as hex
+        //writeArrHex(buffer);
     } catch (FileException) {
         writeln("Something went wrong reading the file. Are you sure you have permissions?");
     }
 }
 
-void writeBufferFancy(char[] arr){
+byte[] rawReadUntilEOF(string path){
+    import std.array: appender;
+
+    auto output = appender!(byte[]);
+
+    // try catch later
+    auto file = File(path, "r");
+
+    while(!file.eof){
+        output.put(file.rawRead(new byte[1]));
+    }
+
+    return output.data;
+}
+
+void writeBufferFancy(byte[] arr){
     // loop through buffer
     for (int y; y < arr.length - 1; y++) {
-        writef("%2X ", arr[y]);
+        writef("%2X ", cast(char)arr[y]);
         // if byte chunk of 8 bytes is reached, print ascii for those 8 bytes and print a newline
         if (y % 8 == 0 && y != 0) {
             writef("      ");
             for (int z; z < 8; z++) {
-                writef("%#c", arr[y - 8 + z]);
+                writef("%c", cast(char)arr[y - 8 + z]);
             }
             writef("\n");
         }
@@ -67,14 +67,16 @@ void writeBufferFancy(char[] arr){
     writef("\n");
 }
 
-void writeArrAscii(char[] arr){
+/*
+
+void writeArrAscii(byte[] arr){
     for (int y; y < arr.length - 1; y++) {
         writef("%c", arr[y]);
     }
     writef("\n");
 }
 
-void writeArrHex(char[] arr){
+void writeArrHex(byte[] arr){
     for (int y; y < arr.length - 1; y++) {
         writef("%X ", arr[y]);
         if (y % 8 == 0) {
@@ -83,3 +85,4 @@ void writeArrHex(char[] arr){
     }
     writef("\n");
 }
+*/
