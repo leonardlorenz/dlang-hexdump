@@ -2,22 +2,63 @@ import std.stdio;
 import std.file;
 import std.string;
 
-char* INPUT_PATH;
-string OUTPUT_PATH = "";
+string INPUT_PATH;
+string OUTPUT_PATH;
 
 void main(string[] args){
     if (args.length == 3) {
-        INPUT_PATH = cast(char*) args[1].dup;
-        OUTPUT_PATH = args[2];
+        string cwd = getcwd();
+        INPUT_PATH = cwd ~ "/" ~ args[1];
+        OUTPUT_PATH = cwd ~ "/" ~ args[2];
+        /*
+        writeln(INPUT_PATH);
+        writeln(OUTPUT_PATH);
+        */
     }
 
     // open input file
-    FILE* INPUT_FILE;
+    File INPUT_FILE = File(INPUT_PATH, "r");
+    File OUTPUT_FILE = File(OUTPUT_PATH, "w");
+
     try{
-        INPUT_FILE = fopen(INPUT_PATH, "r");
-    } catch (FileException){
-        writeln("Couldn't read this file. Are you sure the path\n" + INPUT_PATH + "\nis valid?");
+        bool is_eof = false;
+        // while EOF not found
+        while(!is_eof){
+
+            // read into buffer
+            char[] buffer = INPUT_FILE.rawRead(new char[1024]);
+
+            // loop through buffer to find EOF
+            int x;
+            for(; x < buffer.length; x++){
+                // EOF == 0xA == 10 for some reason
+                if (buffer[x] == 0xA){
+                    is_eof = true;
+                    break;
+                }
+            }
+
+            // write buffer as ascii
+            writeArrAscii(buffer);
+
+            // write buffer as hex
+            writeArrHex(buffer);
+        }
+    } catch (FileException) {
+        writeln("Something went wrong reading the file. Are you sure you have permissions?");
     }
-    // close input file again
-    fclose(INPUT_FILE);
+}
+
+void writeArrAscii(char[] arr){
+    for (int y; y < arr.length - 1; y++) {
+        writef("%c", arr[y]);
+    }
+    writef("\n");
+}
+
+void writeArrHex(char[] arr){
+    for (int y; y < arr.length - 1; y++) {
+        writef("%X ", arr[y]);
+    }
+    writef("\n");
 }
