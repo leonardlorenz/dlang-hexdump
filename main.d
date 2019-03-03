@@ -57,9 +57,10 @@ void writeBufferFancy(byte[] arr){
         for (auto y = x; y < chunkWidth + x; y++) {
             if (y < arr.length) {
                 char current = cast(char) arr[y];
-                if (current != cast(char) "\n"
-                 && current != cast(char) "\t"
-                 && current != cast(char) " "
+                /** if it's not space and bigger than 0x1f
+                  (meaning it's not a control operator) */
+                if (current != cast(char) " "
+                 && current > cast(char) 0x1f
                 ){
                     writef("%c", cast(char)arr[y]);
                 } else {
