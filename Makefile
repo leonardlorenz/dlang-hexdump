@@ -1,5 +1,5 @@
 compile:
-	ldc main.d
+	ldc2 main.d
 run:
 	./main testfile.txt
 clean:
