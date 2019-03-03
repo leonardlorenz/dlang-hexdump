@@ -20,11 +20,6 @@ void main(string[] args){
         // write buffer as hex and ascii next to each other
         writeBufferFancy(buffer);
 
-        // write buffer as ascii
-        //writeArrAscii(buffer);
-
-        // write buffer as hex
-        //writeArrHex(buffer);
     } catch (FileException) {
         writeln("Something went wrong reading the file. Are you sure you have permissions?");
     }
@@ -54,16 +49,7 @@ void writeBufferFancy(byte[] arr){
         // print hex
         for (auto y = x; y < chunkWidth + x; y++){
             if (y < arr.length) {
-                char current = cast(char) arr[y];
-                if (current != cast(char)"\n"){
-                    if (current != cast(char)"\t"){
-                        writef("%2X ", cast(char)arr[y]);
-                    } else {
-                        write("\\t ");
-                    }
-                } else {
-                    write("\\n ");
-                }
+                writef("%2X ", cast(char)arr[y]);
             }
         }
         write("      ");
