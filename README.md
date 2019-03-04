@@ -2,11 +2,20 @@
 
 ## Usage:
 
-`./main /path/to/file`
+`dhex /path/to/file`
+
+## Installation:
+
+```
+git clone https://github.com/leonardlorenz/dlang-hexdump.git
+cd dlang-hexdump
+make 
+sudo make install
+```
 
 ## Example:
 
-`./main ~/Git/dlang-hexdump/main.d`
+`dhex testfile.txt`
 
 ```
 69 6D 70 6F 72 74 20 73 74 64 2E 73 74 64 69 6F 3B \n 69 6D 70 6F 72 74       import.std.stdio;.import
