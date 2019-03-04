@@ -60,6 +60,7 @@ void writeBufferFancy(byte[] arr){
                 /** if it's not space and bigger than 0x1f
                   (meaning it's not a control operator) */
                 if (current != cast(char) " "
+                 && current != cast(char) ""
                  && current > cast(char) 0x1f
                 ){
                     writef("%c", cast(char)arr[y]);
