@@ -2,20 +2,29 @@ import std.stdio;
 import std.file;
 import std.string;
 
-string INPUT_PATH;
-
 void main(string[] args){
     if (args.length == 2) {
         string cwd = getcwd();
-        INPUT_PATH = args[1];
+        string argument = args[1];
+        if (argument == "-h") {
+            printHelp();
+            exitProgram(0);
+        } else {
+            hexdump(argument);
+        }
+    } else if (args.length < 2) {
+            printHelp();
+            exitProgram(0);
     }
+}
 
+void hexdump(string inputPath) {
     // open input file
-    File INPUT_FILE = File(INPUT_PATH, "r");
+    File INPUT_FILE = File(inputPath, "r");
 
     try{
         // read into buffer
-        byte[] buffer = rawReadUntilEOF(INPUT_PATH);
+        byte[] buffer = rawReadUntilEOF(inputPath);
 
         // write buffer as hex and ascii next to each other
         writeBufferFancy(buffer);
@@ -23,6 +32,14 @@ void main(string[] args){
     } catch (FileException) {
         writeln("Something went wrong reading the file. Are you sure you have permissions?");
     }
+}
+
+void printHelp() {
+    writeln("SYNOPSIS");
+    writeln("\tdhex [OPTIONS] /path/to/file");
+    writeln("");
+    writeln("OPTIONS");
+    writeln("\t-h\tPrint help (this text).");
 }
 
 byte[] rawReadUntilEOF(string path){
@@ -71,4 +88,9 @@ void writeBufferFancy(byte[] arr){
         }
         write("\n");
     }
+}
+
+void exitProgram(int statusCode) {
+    import core.stdc.stdlib : exit;
+    exit(statusCode);
 }
