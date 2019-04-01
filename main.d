@@ -15,8 +15,7 @@ void main(string[] args){
     } else if (args.length < 2) {
             printHelp();
             exitProgram(0);
-    }
-}
+    } }
 
 void hexdump(string inputPath) {
     // open input file
@@ -78,7 +77,8 @@ void writeBufferFancy(byte[] arr){
                   (meaning it's not a control operator) */
                 if (current != cast(char) " "
                  && current != cast(char) ""
-                 && current > cast(char) 0x1f
+                 && current > cast(char) 0x20
+                 && current < cast(char) 0x7E
                 ){
                     writef("%c", cast(char)arr[y]);
                 } else {
