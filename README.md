@@ -6,10 +6,16 @@
 
 ## Installation:
 
+### Dependencies:
+
+(build dependencies are flagged with a * )
+- `liblphobos`
+- `ldc2`*
+
 ```
 git clone https://github.com/leonardlorenz/dlang-hexdump.git
 cd dlang-hexdump
-make 
+make
 sudo make install
 ```
 
